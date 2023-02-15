@@ -1,5 +1,5 @@
 class Utils{
-    public Matrix add(Matrix m, double scalar){
+    public static Matrix add(Matrix m, double scalar){
         //adds a scalar to each value in the matrix
         Matrix temp = new Matrix(m.rows,m.cols);
         // for each row
@@ -12,7 +12,7 @@ class Utils{
         }
         return temp;
     } 
-    public Matrix add(Matrix m, Matrix a){
+    public static Matrix add(Matrix m, Matrix a){
         // adds a matrix to this matrix
         // the way this works is each value in the matrix is added to the value in the other 
         // matrix at the same position
@@ -35,7 +35,7 @@ class Utils{
         return temp;
     }
 
-    public Matrix subtract(Matrix m, double scalar){
+    public static Matrix subtract(Matrix m, double scalar){
         // subtracts a scalar from each value in the matrix
         Matrix temp = new Matrix(m.rows,m.cols);
         // for each row
@@ -59,6 +59,21 @@ class Utils{
             for (int j = 0; j < m.cols; j++){
                 // multiply the value by the scalar
                 temp.data[i][j] = m.data[i][j] * scalar;
+            }
+        }
+        return temp;
+    }
+
+    public static Matrix transpose(Matrix m){
+        // transposes the matrix
+        Matrix temp = new Matrix(m.cols,m.rows);
+
+        // for each row
+        for (int i = 0; i < m.rows; i++){
+            // for each column
+            for (int j = 0; j < m.cols; j++){
+                // swap the values
+                temp.data[j][i] = m.data[i][j];
             }
         }
         return temp;
