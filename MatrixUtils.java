@@ -51,6 +51,28 @@ class MatrixUtils{
         }
         return temp;
     }
+    public static Matrix subtract(Matrix m, Matrix s){
+        // subtracts a matrix from this matrix
+        // each value in the matrix is subtracted from the value in the other 
+        // matrix at the same position
+        Matrix temp = new Matrix(m.rows,m.cols);
+
+        // check if the matrices are the same shape
+        if(m.rows != s.rows || m.cols != s.cols){
+            System.out.println("Matrices must have the same dimensions to subtract!");
+            return null;
+        }
+
+        //for each row
+        for (int i = 0; i < m.rows; i++){
+            // for each column
+            for (int j = 0; j < m.cols; j++){
+                // subtract the value from the other matrix from this matrix
+                temp.data[i][j] = m.data[i][j] - s.data[i][j];
+            }
+        }
+        return temp;
+    }
     public static Matrix transpose(Matrix m){
         // transposes the matrix
         Matrix temp = new Matrix(m.cols,m.rows);

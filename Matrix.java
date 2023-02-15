@@ -96,7 +96,7 @@ class Matrix{
         
     }
     public List<Double> toArray() {
-        List<Double> temp= new ArrayList<Double>()  ;
+        List<Double> temp= new ArrayList<Double>();
         
         for(int i=0;i<rows;i++)
         {
