@@ -1,10 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
+
 class Matrix{
     // holds the numbers in the matrix
     double [][] data;
     // holds the number of rows and columns
     int rows, cols;
 
-    // constructor
+    /**creates a matrix, initializing to random values*/
     public Matrix(int rows, int cols){
         this.rows = rows;
         this.cols = cols;
@@ -22,6 +25,91 @@ class Matrix{
             }
         }
     }
+
+    //non-static operations, static ones are located in Utils.java
+    public void add(double scaler)
+        {
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+            {
+                this.data[i][j]+=scaler;
+            }
+            
+        }
+        }
+
+        public void add(Matrix m)
+        {
+        if(cols!=m.cols || rows!=m.rows) {
+            System.out.println("Shape Mismatch");
+            return;
+        }
+
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+            {
+                this.data[i][j]+=m.data[i][j];
+            }
+        }
+        }
+        public void multiply(Matrix a) {
+        for(int i=0;i<a.rows;i++)
+        {
+            for(int j=0;j<a.cols;j++)
+            {
+                this.data[i][j]*=a.data[i][j];
+            }
+        }
+        
+    }
+    public void sigmoid() {
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+                this.data[i][j] = 1/(1+Math.exp(-this.data[i][j])); 
+        }
+        
+    }
+    
+    public Matrix dsigmoid() {
+        Matrix temp=new Matrix(rows,cols);
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+                temp.data[i][j] = this.data[i][j] * (1-this.data[i][j]);
+        }
+        return temp;
+        
+    }
+
+    
+    public void multiply(double a) {
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+            {
+                this.data[i][j]*=a;
+            }
+        }
+        
+    }
+    public List<Double> toArray() {
+        List<Double> temp= new ArrayList<Double>()  ;
+        
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+            {
+                temp.add(data[i][j]);
+            }
+        }
+        return temp;
+   }
+
+
+
 
     public void printMatrix(){
         // for each row
