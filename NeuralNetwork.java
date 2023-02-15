@@ -73,5 +73,40 @@ public class NeuralNetwork{
         // error = target - output
         Matrix output_error = MatrixUtils.subtract(target, output);
 
+        //here be dragons, i have no idea what anything beyond this in this function does
+        //backpropagation calculus, need to research more
+        Matrix gradient = output.dsigmoid();
+
+        gradient.multiply(error);
+        gradient.multiply(l_rate);
+        
+        Matrix hidden_T = Matrix.transpose(hidden);
+        Matrix who_delta =  Matrix.multiply(gradient, hidden_T);
+        
+        weights_ho.add(who_delta);
+        bias_o.add(gradient);
+        
+        Matrix who_T = Matrix.transpose(weights_ho);
+        Matrix hidden_errors = Matrix.multiply(who_T, error);
+        
+        Matrix h_gradient = hidden.dsigmoid();
+        h_gradient.multiply(hidden_errors);
+        h_gradient.multiply(l_rate);
+        
+        Matrix i_T = Matrix.transpose(input);
+        Matrix wih_delta = Matrix.multiply(h_gradient, i_T);
+        
+        weights_ih.add(wih_delta);
+        bias_h.add(h_gradient);
     }
+    
+    public void fit(double[][]X,double[][]Y,int epochs)
+    {
+        for(int i=0;i<epochs;i++)
+        {    
+            int sampleN =  (int)(Math.random() * X.length );
+            this.train(X[sampleN], Y[sampleN]);
+        }
+    }
+
 }
