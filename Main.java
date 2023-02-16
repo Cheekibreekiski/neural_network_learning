@@ -61,6 +61,7 @@ static double [][] Y= {
   //   then repeat for each line
     // loadData();
     //System.out.println(Double.parseDouble());
+    //TODO rgb color matcher
   NeuralNetwork nn = new NeuralNetwork(2,10,1);
   nn.fit(X, Y, 50000);
   Scanner sc = new Scanner(System.in);
