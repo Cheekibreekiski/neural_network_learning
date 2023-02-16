@@ -42,8 +42,7 @@ class Matrix{
         public void add(Matrix m)
         {
         if(cols!=m.cols || rows!=m.rows) {
-            System.out.println("Shape Mismatch");
-            return;
+            throw new IllegalArgumentException("Matrix dimensions must agree.");
         }
 
         for(int i=0;i<rows;i++)

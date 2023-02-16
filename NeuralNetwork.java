@@ -1,5 +1,8 @@
 import java.util.List;
 
+/**
+ * @deprecated use NNMultiHiddenLayers instead
+ */
 public class NeuralNetwork{
     // weight input to hidden, weight hidden to output, bias hidden, bias output
     Matrix weights_ih, weights_ho, bias_h, bias_o;
@@ -13,7 +16,6 @@ public class NeuralNetwork{
      * @param o number of output nodes
      */
     public NeuralNetwork(int i, int h, int o){
-        //TODO: add a way to add more hidden layers
         // initialize the weights and biases
         weights_ih = new Matrix(h,i);
         weights_ho = new Matrix(o,h);
@@ -21,6 +23,7 @@ public class NeuralNetwork{
         bias_h = new Matrix(h,1);
         bias_o = new Matrix(o,1);
     }
+  
     /**
      * @param x input array
      * @return output array
@@ -55,7 +58,6 @@ public class NeuralNetwork{
         // multiply the input by the weights and add the bias for each neuron
         //TODO: can i just use predict here?
         Matrix input = MatrixUtils.fromArray(X);
-        // weights_ih -> 10x2 , input -> 2x1
         Matrix hidden = MatrixUtils.multiply(weights_ih, input);
         hidden.add(bias_h);
         hidden.sigmoid();
