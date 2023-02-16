@@ -88,26 +88,21 @@ class MatrixUtils{
         return temp;
     }
 
-    public static Matrix multiply(Matrix m, Matrix a){
-        // multiplies this matrix by another matrix
-        // the way this works is each value in the matrix is multiplied by the value in the other 
-        // matrix at the same position
-        Matrix temp = new Matrix(m.rows,m.cols);
-        // check if the matrices are the same shape
-        if(m.rows != a.rows || m.cols != a.cols){
-            System.out.println("Matrices must have the same dimensions to multiply!");
-            return null;
-        }
-        //for each row
-        for (int i = 0; i < m.rows; i++){
-            // for each column
-            for (int j = 0; j < m.cols; j++){
-                // multiply the value from the other matrix to this matrix
-                temp.data[i][j] = m.data[i][j] * a.data[i][j];
+    public static Matrix multiply(Matrix a, Matrix b) {
+        Matrix temp=new Matrix(a.rows,b.cols);
+        for(int i=0;i<temp.rows;i++){
+            for(int j=0;j<temp.cols;j++){
+                double sum=0;
+                for(int k=0;k<a.cols;k++)
+                {
+                    sum+=a.data[i][k]*b.data[k][j];
+                }
+                temp.data[i][j]=sum;
             }
         }
         return temp;
     }
+
     public Matrix multiply(Matrix m, double scalar){
         // multiplies each value in the matrix by a scalar
         Matrix temp = new Matrix(m.rows,m.cols);

@@ -51,55 +51,46 @@ public class NeuralNetwork{
      * @param x input array
      * @param y target array
      */
-    public void train(double[] x, double[] y){
+    public void train(double[] X, double[] Y){
         // multiply the input by the weights and add the bias for each neuron
         //TODO: can i just use predict here?
-
-        // input nodes
-        Matrix input = MatrixUtils.fromArray(x);
-        Matrix hidden = MatrixUtils.multiply(weights_ih,input);
+        Matrix input = MatrixUtils.fromArray(X);
+        // weights_ih -> 10x2 , input -> 2x1
+        Matrix hidden = MatrixUtils.multiply(weights_ih, input);
         hidden.add(bias_h);
         hidden.sigmoid();
         
-        // output nodes
         Matrix output = MatrixUtils.multiply(weights_ho,hidden);
         output.add(bias_o);
         output.sigmoid();
-
-        // x is the given input, y is the desired output
-        Matrix target = MatrixUtils.fromArray(y);
-
-        // calculate the error
-        // error = target - output
-        Matrix output_error = MatrixUtils.subtract(target, output);
-
-        //here be dragons, i have no idea what anything beyond this in this function does
-        //backpropagation calculus, need to research more
-        Matrix gradient = output.dsigmoid();
-
-        gradient.multiply(error);
-        gradient.multiply(l_rate);
         
-        Matrix hidden_T = Matrix.transpose(hidden);
-        Matrix who_delta =  Matrix.multiply(gradient, hidden_T);
+        Matrix target = MatrixUtils.fromArray(Y);
+        
+        Matrix error = MatrixUtils.subtract(target, output);
+        Matrix gradient = output.dsigmoid();
+        gradient.multiply(error);
+        gradient.multiply(lr);
+        
+        Matrix hidden_T = MatrixUtils.transpose(hidden);
+        Matrix who_delta =  MatrixUtils.multiply(gradient, hidden_T);
         
         weights_ho.add(who_delta);
         bias_o.add(gradient);
         
-        Matrix who_T = Matrix.transpose(weights_ho);
-        Matrix hidden_errors = Matrix.multiply(who_T, error);
+        Matrix who_T = MatrixUtils.transpose(weights_ho);
+        Matrix hidden_errors = MatrixUtils.multiply(who_T, error);
         
         Matrix h_gradient = hidden.dsigmoid();
         h_gradient.multiply(hidden_errors);
-        h_gradient.multiply(l_rate);
+        h_gradient.multiply(lr);
         
-        Matrix i_T = Matrix.transpose(input);
-        Matrix wih_delta = Matrix.multiply(h_gradient, i_T);
+        Matrix i_T = MatrixUtils.transpose(input);
+        Matrix wih_delta = MatrixUtils.multiply(h_gradient, i_T);
         
         weights_ih.add(wih_delta);
         bias_h.add(h_gradient);
     }
-    
+
     public void fit(double[][]X,double[][]Y,int epochs)
     {
         for(int i=0;i<epochs;i++)
