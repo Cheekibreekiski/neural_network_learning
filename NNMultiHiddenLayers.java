@@ -47,66 +47,43 @@ public class NNMultiHiddenLayers {
         //  return the output of the final layer
         return input.toArray();
     }
-
-    /**
-     * 
-     * @param X inputs
-     * @param Y target outputs
-     */
-    public void train(double[] X, double[] Y){
-        // multiply the input by the weights and add the bias for each neuron
-        Matrix input = MatrixUtils.fromArray(X);
-        // for each layer
-        for(int i = 0; i < weights.length; i++){
-            // multiply the weights by the input and add the bias
-            Matrix hidden = MatrixUtils.multiply(weights[i], input);
-            hidden.add(biases[i]);
-            // apply the activation function
-            hidden.sigmoid();
-            // now repeat the process using the layer we just processed as
-            // the input for the next layer
-            input = hidden;
-        }
-        //  use gradient descent to adjust the weights and biases
-        //  WARNING: here be dragons
-        //  a lot of calculus, i have no idea what it does, need to research more
-        
-        //  calculate the error
-        Matrix output = input;
-        Matrix target = MatrixUtils.fromArray(Y);
-        Matrix error = MatrixUtils.subtract(target, output);
-        //  calculate the gradient
-        Matrix gradient = output.dsigmoid();
-        gradient.multiply(error);
-        gradient.multiply(learningRate);
-        //  calculate the deltas
-        // deltas are the change in the weights and biases
-        Matrix hidden_T = MatrixUtils.transpose(input);
-        Matrix weight_ho_deltas = MatrixUtils.multiply(gradient, hidden_T);
-        //  adjust the weights by deltas
-        
-        Matrix weights_T = MatrixUtils.transpose(weights[weights.length-1]);
-        weights_T.add(weight_ho_deltas);
-        weights[weights.length-1] = MatrixUtils.transpose(weights_T);
-        //  adjust the biases by its deltas (which is just the gradient)
-        biases[biases.length-1].add(gradient);
-        //  calculate the hidden layer errors
-        Matrix who_t = MatrixUtils.transpose(weights[weights.length-1]);
-        Matrix hidden_errors = MatrixUtils.multiply(who_t, error);
-        //  calculate the hidden gradient
-        Matrix hidden_gradient = input.dsigmoid();
-        hidden_gradient.multiply(hidden_errors);
-        hidden_gradient.multiply(learningRate);
-        //  calculate the input->hidden deltas
-        Matrix inputs_T = MatrixUtils.transpose(MatrixUtils.fromArray(X));
-        Matrix weight_ih_deltas = MatrixUtils.multiply(hidden_gradient, inputs_T);
-        //  adjust the weights by deltas
-        Matrix weights_ih_T = MatrixUtils.transpose(weights[0]);
-        weights_ih_T.add(weight_ih_deltas);
-        weights[0] = MatrixUtils.transpose(weights_ih_T);
-        //  adjust the biases by its deltas (which is just the gradient)
-        biases[0].add(hidden_gradient);
+/**
+ * 
+ * @param X inputs
+ * @param Y target outputs
+ */
+public void train(double[] X, double[] Y){
+    // multiply the input by the weights and add the bias for each neuron
+    Matrix input = MatrixUtils.fromArray(X);
+    List<Matrix> hiddenOutputs = new ArrayList<>();
+    hiddenOutputs.add(input);
+    // for each layer
+    for(int i = 0; i < weights.length; i++){
+        // multiply the weights by the input and add the bias
+        Matrix hidden = MatrixUtils.multiply(weights[i], hiddenOutputs.get(i));
+        hidden.add(biases[i]);
+        // apply the activation function
+        hidden.sigmoid();
+        // now repeat the process using the layer we just processed as
+        // the input for the next layer
+        hiddenOutputs.add(hidden);
     }
+    //  use gradient descent to adjust the weights and biases
+    Matrix output = hiddenOutputs.get(hiddenOutputs.size() - 1);
+    Matrix target = MatrixUtils.fromArray(Y);
+    List<Matrix> errors = new ArrayList<>();
+    errors.add(MatrixUtils.subtract(target, output));
+    // backward pass
+    for(int i = hiddenOutputs.size() - 2; i >= 0; i--){
+        Matrix hidden = hiddenOutputs.get(i);
+        Matrix outputDelta = errors.get(errors.size() - 1).multiply(hidden.dsigmoid()).multiply(learningRate);
+        errors.add(MatrixUtils.multiply(MatrixUtils.transpose(weights[i]), errors.get(errors.size() - 1)));
+        // update weights and biases
+        weights[i].add(MatrixUtils.multiply(outputDelta, MatrixUtils.transpose(hidden)));
+        biases[i].add(outputDelta);
+    }
+}
+
     
     /**
      * @param X inputs
