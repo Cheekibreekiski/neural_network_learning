@@ -77,7 +77,9 @@ public void train(double[] X, double[] Y){
     // backward pass
     for(int i = hiddenOutputs.size() - 2; i >= 0; i--){
         Matrix hidden = hiddenOutputs.get(i);
-        Matrix outputDelta = MatrixUtils.multiply(errors.get(errors.size() - 1).multiply(hidden.dsigmoid()), learningRate);
+        Matrix iHaveNoIdeaWhatThisIs = errors.get(errors.size() - 1);
+        iHaveNoIdeaWhatThisIs.multiply(hidden.dsigmoid());
+        Matrix outputDelta = MatrixUtils.multiply(iHaveNoIdeaWhatThisIs, learningRate);
         errors.add(MatrixUtils.multiply(MatrixUtils.transpose(weights[i]), errors.get(errors.size() - 1)));
         // update weights and biases
         weights[i].add(MatrixUtils.multiply(outputDelta, MatrixUtils.transpose(hiddenOutputs.get(i))));

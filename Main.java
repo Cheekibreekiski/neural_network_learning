@@ -80,7 +80,7 @@ public static void XORMultiLayer(){
     {0},{1},{1},{0}
   };
   //2 input nodes, 2 hidden layers with 10 nodes each, 1 output node
-  int[] layers = {2,10,10,1};
+  int[] layers = {2,3,3,1};
 
   NNMultiHiddenLayers nn = new NNMultiHiddenLayers(layers);
   
@@ -94,6 +94,7 @@ public static void XORMultiLayer(){
     System.out.println("Enter another boolean: ");
     String b = sc.nextLine();
     if(a.equals("-1") || b.equals("-1")){
+      sc.close();
       break;
     }
     int a1 = 0;
