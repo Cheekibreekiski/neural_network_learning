@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class NNMultiHiddenLayers {
@@ -76,7 +77,7 @@ public void train(double[] X, double[] Y){
     // backward pass
     for(int i = hiddenOutputs.size() - 2; i >= 0; i--){
         Matrix hidden = hiddenOutputs.get(i);
-        Matrix outputDelta = errors.get(errors.size() - 1).multiply(hidden.dsigmoid()).multiply(learningRate);
+        Matrix outputDelta = MatrixUtils.multiply(MatrixUtils.multiply(errors.get(errors.size() - 1), hidden.dsigmoid()), learningRate);
         errors.add(MatrixUtils.multiply(MatrixUtils.transpose(weights[i]), errors.get(errors.size() - 1)));
         // update weights and biases
         weights[i].add(MatrixUtils.multiply(outputDelta, MatrixUtils.transpose(hidden)));

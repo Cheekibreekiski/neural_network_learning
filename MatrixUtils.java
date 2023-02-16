@@ -103,7 +103,7 @@ class MatrixUtils{
         return temp;
     }
 
-    public Matrix multiply(Matrix m, double scalar){
+    public static Matrix multiply(Matrix m, double scalar){
         // multiplies each value in the matrix by a scalar
         Matrix temp = new Matrix(m.rows,m.cols);
         // for each row
