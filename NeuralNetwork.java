@@ -1,7 +1,6 @@
 import java.util.List;
 
 /**
- * @deprecated use NNMultiHiddenLayers instead
  */
 public class NeuralNetwork{
     // weight input to hidden, weight hidden to output, bias hidden, bias output

@@ -3,15 +3,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main{
-  static double [][] X;
-  static double [][] Y;
+  static double[][] X = new double[][]{
+    {0,0},
+    {1,0},
+    {0,1},
+    {1,1},
+  };
+  static double[][] Y = new double[][]{
+    {0},{1},{1},{0}
+  };
 
 
   public static void main(String[] args){
     //TODO rgb color matcher
     //givena random rgb color, determine if white or black text is more readable
     XORMultiLayer();
-
+    //XOR();
 
   }
 
@@ -19,15 +26,6 @@ public class Main{
 //WORKS
 public static void XOR(){
   System.out.println("Initializing...");
-  X = new double[][]{
-    {0,0},
-    {1,0},
-    {0,1},
-    {1,1}
-  };
-  Y = new double[][]{
-    {0},{1},{1},{0}
-  };
   NeuralNetwork nn = new NeuralNetwork(2,10,1);
   System.out.println("Training...");
   nn.fit(X, Y, 50000);
@@ -70,17 +68,8 @@ public static void XOR(){
 
 public static void XORMultiLayer(){
   System.out.println("Initializing...");
-  X = new double[][]{
-    {0,0},
-    {1,0},
-    {0,1},
-    {1,1}
-  };
-  Y = new double[][]{
-    {0},{1},{1},{0}
-  };
-  //2 input nodes, 2 hidden layers with 10 nodes each, 1 output node
-  int[] layers = {2,3,1};
+
+  int[] layers = {2,10,1};
 
   NNMultiHiddenLayers nn = new NNMultiHiddenLayers(layers);
   
@@ -113,7 +102,7 @@ public static void XORMultiLayer(){
 
     double[] input = {a1,b1};
     List<Double> output = nn.predict(input);
-    System.out.println(output);
+    System.out.println("("+a1+","+b1+") ->" +output);
     if(output.get(0) > 0.5){
       System.out.println("TRUE");
     }else{

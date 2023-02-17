@@ -123,8 +123,10 @@ class MatrixUtils{
         for (int i = 0; i < m.rows; i++){
             // for each column
             for (int j = 0; j < m.cols; j++){
-                // apply the sigmoid function to the value
-                temp.data[i][j] = 1/(1+Math.exp(-m.data[i][j]));
+                 // apply the sigmoid function to the value
+                // temp.data[i][j] = 1/(1+Math.exp(-m.data[i][j]));
+                //relu
+                temp.data[i][j] = Math.max(0,m.data[i][j]);
             }
         }
         return temp;
@@ -136,8 +138,10 @@ class MatrixUtils{
         for (int i = 0; i < m.rows; i++){
             // for each column
             for (int j = 0; j < m.cols; j++){
-                // apply the derivative of the sigmoid function to the value
-                temp.data[i][j] = m.data[i][j] * (1-m.data[i][j]);
+                //apply the derivative of the sigmoid function to the value
+                //temp.data[i][j] = m.data[i][j] * (1-m.data[i][j]);
+                //relu
+                temp.data[i][j] = m.data[i][j] > 0 ? 1 : 0;
             }
         }
         return temp;
