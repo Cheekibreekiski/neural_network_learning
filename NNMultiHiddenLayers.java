@@ -77,11 +77,12 @@ public void train(double[] X, double[] Y){
     // backward pass
     for(int i = hiddenOutputs.size() - 2; i >= 0; i--){
         Matrix hidden = hiddenOutputs.get(i);
-        Matrix iHaveNoIdeaWhatThisIs = MatrixUtils.multiply(errors.get(errors.size() - 1), hiddenOutputs.get(i+1).dsigmoid());
-        Matrix outputDelta = MatrixUtils.multiply(iHaveNoIdeaWhatThisIs, learningRate);
-        errors.add(MatrixUtils.multiply(MatrixUtils.transpose(weights[i]), errors.get(errors.size() - 1)));
+        Matrix error = errors.get(errors.size() - 1);
+        Matrix derivative = hiddenOutputs.get(i+1).dsigmoid();
+        Matrix outputDelta = MatrixUtils.multiply(MatrixUtils.multiply(error, derivative), learningRate);
+        errors.add(MatrixUtils.multiply(MatrixUtils.transpose(weights[i]), error));
         // update weights and biases
-        weights[i].add(MatrixUtils.multiply(outputDelta, MatrixUtils.transpose(hiddenOutputs.get(i))));
+        weights[i].add(MatrixUtils.multiply(outputDelta, MatrixUtils.transpose(hidden)));
         biases[i].add(outputDelta);
     }
 }
