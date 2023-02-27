@@ -1,4 +1,4 @@
-package java;
+package nnjava;
 import java.util.List;
 
 /**
@@ -49,6 +49,7 @@ public class NeuralNetwork{
         // return the output
         return output.toArray();
     }
+    
     /**
      * 
      * @param x input array

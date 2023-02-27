@@ -1,4 +1,4 @@
-package java;
+package nnjava;
 import java.util.ArrayList;
 import java.util.List;
 
